@@ -1,37 +1,35 @@
 package com.jxty.facedecorate.render;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.opengl.GLSurfaceView;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.jxty.facedecorate.MainActivity;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by admin on 2017/3/8 0008.
  */
 
-public class CustomSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class CustomSurfaceView implements GLSurfaceView.Renderer {
 
-    private static native void nativeSurfaceChanged(Surface surface);
-    private static native void nativeSurfaceDestroyed();
-    private static native void nativeStartRender();
-    private static native void nativeRequestRender();
-
-    public CustomSurfaceView(Context context){
-        super(context);
+    @Override
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        MainActivity.nativeStartRender();
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
+    public void onSurfaceChanged(GL10 gl, int width, int height) {
+        MainActivity.nativeSurfaceChanged(width,height);
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
+    public void onDrawFrame(GL10 gl) {
+        MainActivity.nativeDrawFrame();
     }
 }
